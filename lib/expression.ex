@@ -39,6 +39,7 @@ defmodule Expression do
       |> String.replace(">", ">>>")
       |> String.replace("&", "&&&")
       |> String.replace("|", "|||")
+      |> String.replace("!", "n")
     s = """
 import Expression
 #{expr}
