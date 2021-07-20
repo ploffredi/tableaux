@@ -32,4 +32,18 @@ defmodule Expression do
 
   def eval(_tab) do
   end
+
+  def from_string(expr) do
+    expr =
+      expr
+      |> String.replace(">", ">>>")
+      |> String.replace("&", "&&&")
+      |> String.replace("|", "|||")
+    s = """
+import Expression
+#{expr}
+"""
+    {result, _}=Code.eval_string s, [], __ENV__
+    result
+  end
 end
