@@ -26,7 +26,7 @@ defmodule Expression do
   def e1 >>> e2 do
     %__MODULE__{type: :implication, e1: e1, e2: e2}
   end
-  def n(e) do
+  def ~~~ e do
     %__MODULE__{type: :not, e1: nil, e2: e}
   end
 
@@ -39,7 +39,7 @@ defmodule Expression do
       |> String.replace(">", ">>>")
       |> String.replace("&", "&&&")
       |> String.replace("|", "|||")
-      |> String.replace("!", "n")
+      |> String.replace("!", "~~~")
     s = """
 import Expression
 #{expr}
