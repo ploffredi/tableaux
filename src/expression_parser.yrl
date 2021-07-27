@@ -1,6 +1,6 @@
-Nonterminals signed elems neg.
-Terminals 'T' 'F' '(' ')' conjunction disjunction implication negation atom.
-Rootsymbol signed.  
+Nonterminals elems neg.
+Terminals  '(' ')' conjunction disjunction implication negation atom.
+Rootsymbol elems.  
 
 Left 100 implication.
 Left 200 disjunction.
@@ -12,8 +12,6 @@ Unary 400 negation.
 %<factor> :== <not> <factor> | "(" <expr> ")" | <const>
 %<const> :== "true" | "false"
 
-signed -> 'T' elems : {true, '$2'}.
-signed -> 'F' elems : {false, '$2'}.
 
 
 elems -> neg : '$1'.
@@ -25,16 +23,6 @@ elems -> atom : extract_token('$1').
 
 neg -> negation elems : {extract_token('$1'), '$2'}.   
 
-%elems -> elem          : '$1'.
-%elems -> '(' elems ')' : '$2'.
-%elems -> negation elems : {extract_token('$1'), '$2'}.
-%elems -> elem conjunction elems : {extract_token('$2'), '$1' , '$3'}.
-%elems -> elem disjunction elems : {extract_token('$2'), '$1' , '$3'}.
-%elems -> elem implication elems : {extract_token('$2'), '$1' , '$3'}.
-
-
-
-%elem -> atom : extract_token('$1').
 
 Erlang code.
 

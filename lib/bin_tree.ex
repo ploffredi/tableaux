@@ -7,9 +7,9 @@ defmodule BinTree do
   `right` is the right subtree (nil if no subtree).
   """
 
-  @type t :: %BinTree{value: any, left: t() | nil, right: t() | nil , checked: boolean()}
+  @type t :: %BinTree{value: any, left: t() | nil, right: t() | nil , checked: boolean(), sign: :T|:F, string: binary()}
 
-  defstruct [:value, :left, :right, :checked]
+  defstruct [:value, :left, :right, :checked, :sign, :string]
 end
 
 defimpl Inspect, for: BinTree do
@@ -19,10 +19,10 @@ defimpl Inspect, for: BinTree do
   # much more readable.
   #
   # BinTree[value: 3, left: BinTree[value: 5, right: BinTree[value: 6]]] becomes (3:(5::(6::)):)
-  def inspect(%BinTree{value: value, left: left, right: right}, opts) do
+  def inspect(%BinTree{string: value, sign: sign, left: left, right: right}, opts) do
     concat([
       "(",
-      to_doc(value, opts),
+      to_doc("#{sign} #{value}", opts),
       ":",
       if(left, do: to_doc(left, opts), else: ""),
       ":",

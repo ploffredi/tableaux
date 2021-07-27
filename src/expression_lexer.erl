@@ -6,13 +6,13 @@
 %% property of the creator of the scanner and is not covered by that
 %% Copyright.
 
--module(signed_expression_lexer).
+-module(expression_lexer).
 
 -export([string/1,string/2,token/2,token/3,tokens/2,tokens/3]).
 -export([format_error/1]).
 
 %% User code. This is placed here to allow extra attributes.
--file("src/signed_expression_lexer.xrl", 20).
+-file("src/expression_lexer.xrl", 20).
 
 op_to_atom([$&|_]) ->
     'conjunction';
@@ -331,7 +331,7 @@ adjust_line(T, A, [_|Cs], L) ->
 %% return signal either an unrecognised character or end of current
 %% input.
 
--file("src/signed_expression_lexer.erl", 334).
+-file("src/expression_lexer.erl", 334).
 yystate() -> 7.
 
 yystate(10, Ics, Line, Tlen, _, _) ->
@@ -432,37 +432,37 @@ yyaction(6, _, _, _) ->
 yyaction(_, _, _, _) -> error.
 
 -compile({inline,yyaction_0/2}).
--file("src/signed_expression_lexer.xrl", 9).
+-file("src/expression_lexer.xrl", 9).
 yyaction_0(TokenChars, TokenLine) ->
      { token, { atom, TokenLine, list_to_atom (TokenChars) } } .
 
 -compile({inline,yyaction_1/1}).
--file("src/signed_expression_lexer.xrl", 10).
+-file("src/expression_lexer.xrl", 10).
 yyaction_1(TokenLine) ->
      { token, { 'T', TokenLine, 'T' } } .
 
 -compile({inline,yyaction_2/1}).
--file("src/signed_expression_lexer.xrl", 11).
+-file("src/expression_lexer.xrl", 11).
 yyaction_2(TokenLine) ->
      { token, { 'F', TokenLine, 'F' } } .
 
 -compile({inline,yyaction_3/2}).
--file("src/signed_expression_lexer.xrl", 12).
+-file("src/expression_lexer.xrl", 12).
 yyaction_3(TokenChars, TokenLine) ->
      { token, { op_to_atom (TokenChars), TokenLine, op_to_atom (TokenChars) } } .
 
 -compile({inline,yyaction_4/1}).
--file("src/signed_expression_lexer.xrl", 13).
+-file("src/expression_lexer.xrl", 13).
 yyaction_4(TokenLine) ->
      { token, { '(', TokenLine } } .
 
 -compile({inline,yyaction_5/1}).
--file("src/signed_expression_lexer.xrl", 14).
+-file("src/expression_lexer.xrl", 14).
 yyaction_5(TokenLine) ->
      { token, { ')', TokenLine } } .
 
 -compile({inline,yyaction_6/0}).
--file("src/signed_expression_lexer.xrl", 16).
+-file("src/expression_lexer.xrl", 16).
 yyaction_6() ->
      skip_token .
 
