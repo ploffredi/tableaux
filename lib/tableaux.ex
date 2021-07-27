@@ -3,40 +3,66 @@ defmodule Tableaux do
   Documentation for `Tableaux`.
   """
 
-  @spec apply_expression(Expression.t(), :T|:F) :: BinTree.t()
-  @doc """
-  Hello world.
+  import BinTree
 
-        ## Examples
 
-      iex> Tableaux.hello()
-      :world
 
-  """
-  def apply_expression(%Expression{type: :atom, tag: tag}, sign) do
-    %BinTree{
-      value: {tag, sign}
-    }
+  def linear_branch_from_list([h]) do
+    %BinTree{value: h}
+  end
+
+  def linear_branch_from_list([h|t]) do
+    %BinTree{value: h, left: linear_branch_from_list(t)}
+  end
+
+  def add_alpha_rules(nil, list) do
+    linear_branch_from_list(list)
   end
 
 
-  def apply_expression(%Expression{type: :not, e2: e}, :T) do
-    apply_expression(e, :F)
+  def add_alpha_rules(%BinTree{left: nil, right: nil}=tree, list) do
+    %BinTree{tree | left: linear_branch_from_list(list)}
   end
 
-  def apply_expression(%Expression{type: :not, e2: e}, :F) do
-    apply_expression(e, :T)
+  def add_alpha_rules(%BinTree{left: nil, right: right}=tree, list) do
+    %BinTree{tree |
+          right: add_alpha_rules(right, list)
+        }
   end
 
-
-  def apply_expression(%Expression{type: :conjunction, e1: e1, e2: e2}, :T) do
-    %BinTree{
-      value: {e1, :T},
-      left: %BinTree{
-        value: {e2, :T},
-      }
-    }
+  def add_alpha_rules(%BinTree{left: left, right: nil}=tree, list) do
+    %BinTree{tree |
+          left: add_alpha_rules(left, list)
+        }
   end
 
-  # &&&, ^^^, <<<, >>>, |||, ~~~
+  def add_alpha_rules(%BinTree{left: left, right: right}=tree, list) do
+    %BinTree{tree |
+          left: add_alpha_rules(left, list),
+          right: add_alpha_rules(right, list)
+        }
+  end
+
+  def add_beta_rules(%BinTree{left: nil, right: nil}=tree, lexp, rexp) do
+    %BinTree{tree | left: %BinTree{value: lexp}, right: %BinTree{value: rexp}}
+  end
+
+  def add_beta_rules(%BinTree{left: nil, right: right}=tree, lexp, rexp) do
+    %BinTree{tree |
+          right: add_beta_rules(right, lexp, rexp)
+        }
+  end
+
+  def add_beta_rules(%BinTree{left: left, right: nil}=tree, lexp, rexp) do
+    %BinTree{tree |
+          left: add_beta_rules(left, lexp, rexp)
+        }
+  end
+
+  def add_beta_rules(%BinTree{left: left, right: right}=tree, lexp, rexp) do
+    %BinTree{tree |
+          left: add_beta_rules(left,  lexp, rexp),
+          right: add_beta_rules(right, lexp, rexp)
+        }
+  end
 end

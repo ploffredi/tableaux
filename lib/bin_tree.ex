@@ -7,9 +7,9 @@ defmodule BinTree do
   `right` is the right subtree (nil if no subtree).
   """
 
-  @type t :: %BinTree{value: any, left: t() | nil, right: t() | nil}
+  @type t :: %BinTree{value: any, left: t() | nil, right: t() | nil , checked: boolean()}
 
-  defstruct [:value, :left, :right]
+  defstruct [:value, :left, :right, :checked]
 end
 
 defimpl Inspect, for: BinTree do
