@@ -1,5 +1,5 @@
 Nonterminals signed elems neg.
-Terminals 'T' 'F' '(' ')' ']' conjunction disjunction implication negation atom.
+Terminals 'T' 'F' '(' ')' conjunction disjunction implication negation atom.
 Rootsymbol signed.  
 
 Left 100 implication.
@@ -12,8 +12,8 @@ Unary 400 negation.
 %<factor> :== <not> <factor> | "(" <expr> ")" | <const>
 %<const> :== "true" | "false"
 
-signed -> 'T' elems ']' : {true, '$2'}.
-signed -> 'F' elems ']' : {false, '$2'}.
+signed -> 'T' elems : {true, '$2'}.
+signed -> 'F' elems : {false, '$2'}.
 
 
 elems -> neg : '$1'.

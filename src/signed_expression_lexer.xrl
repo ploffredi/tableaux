@@ -1,9 +1,9 @@
 Definitions.
 
 ATOM       = [a-z]
-TRUE_SIGN  = T\[
-FALSE_SIGN = F\[
-OPERATORS  = [&|!>]
+TRUE_SIGN  = T\s
+FALSE_SIGN = F\s
+OPERATORS  = ([&|!>]|->|¬|∧|∨|→)
 WHITESPACE = [\s\t\n\r]
 
 Rules.
@@ -14,7 +14,7 @@ Rules.
 {OPERATORS}   : {token, {op_to_atom(TokenChars), TokenLine, op_to_atom(TokenChars)}}.
 \(            : {token, {'(',  TokenLine}}.
 \)            : {token, {')',  TokenLine}}.
-\]            : {token, {']',  TokenLine}}.
+% \]            : {token, {']',  TokenLine}}.
 {WHITESPACE}+ : skip_token.
 
 Erlang code.
@@ -22,11 +22,26 @@ Erlang code.
 op_to_atom([$&|_]) ->
     'conjunction';
 
+op_to_atom([$∧|_]) ->
+    'conjunction';
+
 op_to_atom([$||_]) ->
+    'disjunction';
+
+op_to_atom([$∨|_]) ->
     'disjunction';
 
 op_to_atom([$!|_]) ->
     'negation';
 
+op_to_atom([$¬|_]) ->
+    'negation';
+
 op_to_atom([$>|_]) ->
+    'implication';
+
+op_to_atom([$→|_]) ->
+    'implication';
+
+op_to_atom([$-,$>|_]) ->
     'implication'.
